@@ -1,0 +1,150 @@
+
+#include "HAL/EF_GPS.h"
+#include "HAL/nrf24l01.h"
+#include "HAL/EF_Anemometer.h"
+#include <util/delay.h>
+#include <string.h>
+#include "ServiceLayer/EF_Frame.h"
+
+#define POSITION_LENGTH    210
+#define DEBUGENABLED       1
+
+
+
+extern U8_t g_FramBuild[MAX_FRAM_SIZE];
+extern U8_t g_rfChanl;
+extern U16_t g_Packet_ID;
+
+
+
+
+U8_t position[POSITION_LENGTH] = {0};
+
+U8_t sensors_read[21] = {0};
+U8_t ACK_read[32] = {0};
+
+static UART_cfg_str uart_cfg1 = {9600, 8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
+
+int main(void)
+{
+
+	U8_t data_recvd_pipe = 0;
+	U8_t bufferin[32] = {0};
+	unsigned int index = 0;
+	unsigned char j    = 0;
+
+	unsigned int sucuss_count = 0;
+	unsigned int fail_count = 0;
+	U8_t sendpipe = NRF24L01_DATA_PIPE;
+	wrt_nrf_DataStatus nrf_txData_status = nrf_transmit_failed;
+	U8_t ack_byte = 0;
+
+	/* initialization */
+	EF_void_TimerInit();
+	EF_void_UART_Init(&uart_cfg1);
+
+	EF_Gps_init();
+	EF_Anemometer_init();
+	EF_nrf24l01_init(g_rfChanl);
+
+	/* set addresses */
+	uint8_t addrtx0[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP0;
+	uint8_t addrtx1[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP1;
+	uint8_t addrtx2[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP2;
+	uint8_t addrtx3[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP3;
+	uint8_t addrtx4[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP4;
+	uint8_t addrtx5[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP5;
+
+
+#if DEBUGENABLED == 1
+	nrf24l01_printinfo(EF_void_UART_SendString, EF_BOOLEAN_UART_PutChar);
+#endif
+
+	EF_void_TimerCreate(NRF_SEND_ID, NRF_SEND_TIMEOUT);
+
+
+#if DEBUGENABLED == 1
+		char pipebuffer[5];
+		EF_void_UART_SendString("\nsending data on, pipe");
+		itoa(sendpipe, pipebuffer, 10);
+		EF_void_UART_SendString(pipebuffer);
+		EF_void_UART_SendString("\n");
+#endif
+
+
+
+	while(1)
+	{
+
+
+
+		if(sendpipe == 0)
+		{
+			nrf24l01_settxaddr(addrtx0);              /* set tx address for pipe 0 */
+		}
+		else if(sendpipe == 1)
+		{
+			nrf24l01_settxaddr(addrtx1);             /* set tx address for pipe 1 */
+		}
+		else if(sendpipe == 2)
+		{
+			nrf24l01_settxaddr(addrtx2);   		     /* set tx address for pipe 2 */
+		}
+		else if(sendpipe == 3)
+		{
+			nrf24l01_settxaddr(addrtx3);             /* set tx address for pipe 3 */
+		}
+		else if(sendpipe == 4)
+		{
+			nrf24l01_settxaddr(addrtx4);    		/* set tx address for pipe 4 */
+		}
+		else if(sendpipe == 5)
+		{
+			nrf24l01_settxaddr(addrtx5);            /* set tx address for pipe 5 */
+		}
+
+
+
+		memset(sensors_read,7,21);
+	    EF_nrf24l01_init(g_rfChanl);
+
+	    // change to receiver
+//	    _delay_ms(50);
+
+	    while(1)
+	    {
+			nrf24l01_settxaddr(addrtx2);   		     /* set tx address for pipe 2 */
+		    nrf_txData_status = EF_nrf24l01_writeData(sensors_read);
+	    	if(nrf_txData_status == nrf_transmit_success)
+	    	{
+	    		// change to RX
+	    		nrf24l01_setRXMode();
+	    		do
+	    		{
+	    			EF_void_UART_SendString("stuck data received\n");
+
+	    			if(EF_nrf24l01_readready(&data_recvd_pipe))   //if data is ready
+	    			{
+	     				/* read buffer */
+	    				EF_void_UART_SendString("receive data = ");
+	    				EF_nrf24l01_readData(bufferin,32);
+	    				EF_void_UART_SendArray(bufferin, 21);
+	    				EF_void_UART_SendString("\n");
+	    				// change to tx again
+	    				nrf24l01_setTXMode();
+	    			}/* end of read data */
+
+	    		}while(data_recvd_pipe == 0);
+
+	    		data_recvd_pipe = 0;
+	    	}
+
+	    	_delay_ms(200);
+	    }
+
+
+//		_delay_ms(2000);
+	}/* superloop */
+
+	return 0;
+}
