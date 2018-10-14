@@ -18,6 +18,9 @@ void EF_nrf_Build_Fram(gstr_buildFram* buildFram_str)
 	U8_t  crc_data_length = CRC_DATA_LENGTH;
 	U8_t  iterator = 0;
 
+
+	memset(g_FramBuild,0,MAX_FRAM_SIZE);
+
 	/* increment packet id */
 	++g_Packet_ID;
 	/* add start byte  */
@@ -256,9 +259,9 @@ enu_parser_return EF_parseFrame(U8_t *const received_data, str_received_data *gs
 //	EF_void_UART_SendString(" end = ");
 //	EF_void_UART_PutChar(gstr_received_data->end_frame);
 
-	EF_void_UART_SendString("packet id = ");
-	EF_void_UART_Send_Integer(gstr_received_data->packet_id);
-	EF_void_UART_SendString("        ");
+//	EF_void_UART_SendString("packet id = ");
+//	EF_void_UART_Send_Integer(gstr_received_data->packet_id);
+//	EF_void_UART_SendString("        ");
 
 //	EF_void_UART_SendString("massaage =  ");
 //	EF_void_UART_Send_Integer(gstr_received_data->massage_type);

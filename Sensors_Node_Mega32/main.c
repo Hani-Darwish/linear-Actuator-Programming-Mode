@@ -38,7 +38,13 @@ int main(void)
 	unsigned int index = 0;
 	unsigned char j    = 0;
 
+	U8_t data_recvd_pipe = 0;
+//	U8_t data_readyFlag
+	U8_t blocks_error[12] = {0};
+	U8_t blocks_error_number = 0;
+	U8_t bufferin[32] = {0};
 
+	str_received_data recv_data;
 
 	unsigned int sucuss_count = 0;
 	unsigned int fail_count = 0;
@@ -111,7 +117,7 @@ int main(void)
 
 
 
-
+		/* programin the first time   */
 		nrf_txData_status = Send_StartPrograming();
 
 		if(nrf_txData_status == nrf_transmit_success)
@@ -124,64 +130,64 @@ int main(void)
 
 			month_index = 1;
 			/* TODO check this later*/
-			Send_EndPrograming();
+			nrf_txData_status = Send_EndPrograming();
 
 		}
 
+
+		/* Check the block fault in programming  */
+		if(nrf_txData_status == nrf_transmit_success)
+		{
+			// change mode to rx
+			nrf24l01_setRXMode();
+			do
+			{
+				if(EF_nrf24l01_readready(&data_recvd_pipe))
+				{
+					EF_void_UART_SendString("Programming report frame received \n");
+
+					/* read buffer */
+					EF_nrf24l01_readData(bufferin,32);
+					Receive_ErrorFrame(bufferin, blocks_error, &blocks_error_number);
+
+				}/* end of read data */
+				/* wait until receiving any data TODO check time out to be unstuck*/
+			}while(data_recvd_pipe == 0);
+
+			data_recvd_pipe = 0;
+		}
+
+		nrf24l01_setTXMode();
+		nrf24l01_settxaddr(addrtx2);
+		/* Reprogramming the fault blocks */
+		EF_void_UART_SendString(" fualt number ");
+		EF_void_UART_Send_Integer(blocks_error_number);
+		EF_void_UART_SendString("\n");
+		if(!(blocks_error_number == 0))
+		{
+			EF_void_UART_SendString(" Reprogramming the fault blocks  ");
+
+			nrf_txData_status = Send_StartPrograming();
+			if(nrf_txData_status == nrf_transmit_success)
+			{
+
+				for(U8_t i = 0; i < blocks_error_number; i++)
+				{
+					Send_ProgramingBlock(blocks_error[i]);
+					//				month_index++;
+				}
+
+				month_index = 1;
+				/* TODO check this later*/
+				nrf_txData_status = Send_EndPrograming();
+
+			}
+
+		}
+
+
+
 		_delay_ms(10000);
-
-
-
-
-//		for(unsigned int k=0; k < 366; k++ )
-//		{
-////			EF_nrf_Build_Fram((U8_t)SOURCE_ID, (U8_t)DESTINATION_ID,(U8_t)21, sensors_read);
-////			nrf_txData_status = EF_nrf24l01_writeData(g_FramBuild,32);
-//
-//
-//			_delay_ms(150);
-//			if(nrf_txData_status == nrf_transmit_success )
-//			{
-//				sucuss_count++;
-//			}
-//			else
-//			{
-//				fail_count++;
-//			}
-//		}
-//
-//		EF_void_UART_SendString("succes value ");
-//		EF_void_UART_Send_Integer(sucuss_count);
-//		EF_void_UART_SendString("\n");
-//
-//		EF_void_UART_SendString("fail value ");
-//		EF_void_UART_Send_Integer(fail_count);
-//		EF_void_UART_SendString("\n");
-
-//		_delay_ms(5000);
-
-//		/* change the sending channel */
-//		if(g_rfChanl == 92)
-//		{
-//			g_rfChanl = 76;
-//
-//		}
-//		else if(g_rfChanl == 76)
-//		{
-//			g_rfChanl = 92;
-//		}
-//
-//		EF_nrf24l01_init(g_rfChanl);
-//		_delay_ms(70);
-//		g_Packet_ID = 0;
-
-
-
-
-
-
-
-
 
 	}/* superloop */
 

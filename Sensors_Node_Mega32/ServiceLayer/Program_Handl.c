@@ -4,11 +4,17 @@
 /* the buiding frame array  */
  extern U8_t g_FramBuild[MAX_FRAM_SIZE];
 
-static U8_t u8MonthDays[13]   = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+//static U8_t u8MonthDays[13]   = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+  static U8_t u8MonthDays[13]   = {0, 31, 33, 31, 33, 31, 33, 31, 31, 33, 31, 33, 31};
+
+
 
 //U8_t progring_block[620] = {0};
 
 #define Dalay_RATE     100
+//#define Dalay_RATE     50
+
 
 
 U8_t Send_StartPrograming(void)
@@ -214,6 +220,90 @@ U8_t Send_ProgramingBlock(U8_t block_ID)
 	}
 
 	return status;
+}
+
+
+U8_t Send_ErrorFrame(U8_t *months_error )
+{
+
+
+	U8_t index = 0;
+	gstr_buildFram buildFram_str;
+	U8_t Send_ErrorFram_Status = nrf_transmit_failed;
+
+	buildFram_str.source_ID      = SOURCE_ID;
+	buildFram_str.destination_ID = DESTINATION_ID;
+	buildFram_str.massage_type   = CONFIG_MASSAGE;
+	buildFram_str.frame_type     = SNGLE_FRAM;
+	buildFram_str.Payload_length = MAX_PAYLOAD_LENGTH;
+	buildFram_str.subcomand      = programing_error_cmnd;
+
+	for(index = 0; index < REPORT_ERROR_FRAMLENGTH; index++)
+	{
+		buildFram_str.payload[index] = months_error[index];
+	}
+	/* build frame for start programming */
+	EF_nrf_Build_Fram(& buildFram_str);
+	/* send data over nrf module */
+	Send_ErrorFram_Status = EF_nrf24l01_writeData(g_FramBuild, MAX_FRAM_SIZE);
+	return Send_ErrorFram_Status;
+
+}
+
+U8_t Receive_ErrorFrame(U8_t *bufferin, U8_t *blocks_error, U8_t *blocks_error_number)
+{
+
+	U8_t error_status = 0;
+	str_received_data recv_data;
+
+	/* parse the reciving data */
+	EF_parseFrame(bufferin, &recv_data);
+
+//	EF_void_UART_SendString("Programming report ");
+//	EF_void_UART_Send_IntgerArray(recv_data.payload,13);
+//	EF_void_UART_SendString("\n");
+
+
+	*blocks_error_number = 0;
+
+	if(recv_data.subcomand == programing_error_cmnd)
+	{
+		/*first element in the payload will be the number of blocks error   */
+
+		if(recv_data.payload[0] == 0)
+		{
+			EF_void_UART_SendString("NO Error detected \n");
+			error_status = programinmg_correct;
+
+		}
+		else
+		{
+
+			error_status = programing_fault;
+			*blocks_error_number = recv_data.payload[0];
+
+			EF_void_UART_SendString("ERROR Reporting ");
+			EF_void_UART_Send_Integer(*blocks_error_number);
+			EF_void_UART_SendString(" months ");
+
+
+			for(U8_t i=1; i <= recv_data.payload[0]; i++)
+			{
+				blocks_error[i-1] = recv_data.payload[i];
+
+
+				EF_void_UART_Send_Integer(recv_data.payload[i]);
+				EF_void_UART_SendString(" ,");
+
+			}
+			EF_void_UART_SendString("\n");
+
+		}
+
+	}
+
+
+	return error_status;
 }
 
 
