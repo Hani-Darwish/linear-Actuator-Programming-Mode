@@ -4,13 +4,12 @@
 /* the buiding frame array  */
  extern U8_t g_FramBuild[MAX_FRAM_SIZE];
 
-//static U8_t u8MonthDays[13]   = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static U8_t u8MonthDays[13]   = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-  static U8_t u8MonthDays[13]   = {0, 31, 33, 31, 33, 31, 33, 31, 31, 33, 31, 33, 31};
+//  static U8_t u8MonthDays[13]   = {0, 31, 33, 31, 33, 31, 33, 31, 31, 33, 31, 33, 31};
 
 
 
-//U8_t progring_block[620] = {0};
 
 #define Dalay_RATE     100
 //#define Dalay_RATE     50
@@ -256,24 +255,21 @@ U8_t Receive_ErrorFrame(U8_t *bufferin, U8_t *blocks_error, U8_t *blocks_error_n
 	U8_t error_status = 0;
 	str_received_data recv_data;
 
+	*blocks_error_number = 0;
+
 	/* parse the reciving data */
 	EF_parseFrame(bufferin, &recv_data);
 
-//	EF_void_UART_SendString("Programming report ");
-//	EF_void_UART_Send_IntgerArray(recv_data.payload,13);
-//	EF_void_UART_SendString("\n");
 
-
-	*blocks_error_number = 0;
 
 	if(recv_data.subcomand == programing_error_cmnd)
 	{
-		/*first element in the payload will be the number of blocks error   */
+		/* first element in the payload will be the number of blocks error   */
 
 		if(recv_data.payload[0] == 0)
 		{
 			EF_void_UART_SendString("NO Error detected \n");
-			error_status = programinmg_correct;
+			error_status = programing_correct;
 
 		}
 		else
@@ -291,7 +287,6 @@ U8_t Receive_ErrorFrame(U8_t *bufferin, U8_t *blocks_error, U8_t *blocks_error_n
 			{
 				blocks_error[i-1] = recv_data.payload[i];
 
-
 				EF_void_UART_Send_Integer(recv_data.payload[i]);
 				EF_void_UART_SendString(" ,");
 
@@ -302,10 +297,94 @@ U8_t Receive_ErrorFrame(U8_t *bufferin, U8_t *blocks_error, U8_t *blocks_error_n
 
 	}
 
-
 	return error_status;
 }
 
+
+
+
+U8_t Receive_Programing_Mode(U8_t *bufferin, U8_t *months_error)
+{
+
+	U8_t endProgram_flag = 0;
+
+	static U8_t DayPrMonth = 0;
+	static U8_t months_error_index = 0;
+	str_received_data recv_data;
+
+	/*Parse data to get the sub command  */
+	EF_parseFrame(bufferin, &recv_data);
+
+	switch(recv_data.subcomand)
+	{
+
+	case start_programing_cmnd:
+		/* init the index */
+		months_error_index = 0;
+
+		EF_void_UART_SendString("Received start programming command\n");
+		break;
+	case start_block_cmnd:
+		EF_void_UART_SendString("received start block for month ");
+		EF_void_UART_Send_Integer(recv_data.payload[0]);
+		EF_void_UART_SendString("\n");
+		DayPrMonth = 0;
+		break;
+	case programing_block_cmnd:
+		DayPrMonth++;
+		//TODO save payload into the EEPROM
+		break;
+	case end_block_cmnd:
+
+		EF_void_UART_SendString("received end block\n");
+		EF_void_UART_SendString("received ");
+		EF_void_UART_Send_Integer(DayPrMonth);
+		EF_void_UART_SendString(" day\n");
+		/* check programming error per month */
+		U8_t expected_dayspermonth = get_DaysPerMonth(recv_data.payload[0]);
+		if(expected_dayspermonth == DayPrMonth)
+		{
+			EF_void_UART_SendString("received block correct\n");
+		}
+		else
+		{
+			EF_void_UART_SendString("received block ERROR\n");
+			/*add block number */
+			months_error[months_error_index+1] =  recv_data.payload[0];
+			months_error_index++;
+			/* */
+			months_error[0] = months_error_index;
+
+		}
+		break;
+	case end_programing_cmnd:
+
+		endProgram_flag = TRUE;
+
+		EF_void_UART_SendString("received end programming mode\n");
+		if(months_error_index == 0)
+		{
+			EF_void_UART_SendString("No error in programming\n");
+		}
+		else
+		{
+			EF_void_UART_SendString("ERROR in Block ");
+			for(U8_t iter = 1; iter <= months_error_index; iter++)
+			{
+				EF_void_UART_Send_Integer(months_error[iter]);
+				EF_void_UART_SendString("  ");
+			}
+			EF_void_UART_SendString("\n");
+		}
+		break;
+
+	default:
+		break;
+
+	}
+	return endProgram_flag;
+
+}
 
 U8_t get_DaysPerMonth(U8_t month_index)
 {

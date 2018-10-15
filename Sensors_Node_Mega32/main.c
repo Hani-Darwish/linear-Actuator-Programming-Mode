@@ -8,8 +8,9 @@
 #include "ServiceLayer/Program_Handl.h"
 
 
-#define POSITION_LENGTH    210
 #define DEBUGENABLED       1
+#define RF_CHANL_1		   92
+#define RF_CHANL_2		   57
 
 
 
@@ -19,12 +20,8 @@ extern U16_t g_Packet_ID;
 
 
 
-U8_t one_time_flag = 0;
 
-U8_t position[POSITION_LENGTH] = {0};
 
-U8_t sensors_read[21] = {0};
-U8_t ACK_read[32] = {0};
 
 
 static UART_cfg_str uart_cfg1 = {9600, 8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
@@ -35,33 +32,19 @@ static UART_cfg_str uart_cfg1 = {9600, 8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE,
 int main(void)
 {
 
-	unsigned int index = 0;
-	unsigned char j    = 0;
 
 	U8_t data_recvd_pipe = 0;
-//	U8_t data_readyFlag
 	U8_t blocks_error[12] = {0};
-	U8_t blocks_error_number = 0;
+	U8_t blocks_error_number = 12;
 	U8_t bufferin[32] = {0};
-
-	str_received_data recv_data;
-
-	unsigned int sucuss_count = 0;
-	unsigned int fail_count = 0;
-
-	static U8_t month_index = 1;
-
 
 	U8_t sendpipe = NRF24L01_DATA_PIPE;
 	wrt_nrf_DataStatus nrf_txData_status = nrf_transmit_failed;
-	U8_t ack_byte = 0;
 
 	/* initialization */
 	EF_void_TimerInit();
 	EF_void_UART_Init(&uart_cfg1);
 
-	EF_Gps_init();
-	EF_Anemometer_init();
 	EF_nrf24l01_init(g_rfChanl);
 
 	/* set addresses */
@@ -79,8 +62,12 @@ int main(void)
 
 	EF_void_TimerCreate(NRF_SEND_ID, NRF_SEND_TIMEOUT);
 
-	while(1)
+
+	for(U8_t index = 0; index <12; index++)
 	{
+		blocks_error[index] = index+1;
+
+	}
 
 #if DEBUGENABLED == 1
 		char pipebuffer[5];
@@ -90,50 +77,26 @@ int main(void)
 		EF_void_UART_SendString("\n");
 #endif
 
-		if(sendpipe == 0)
-		{
-			nrf24l01_settxaddr(addrtx0);              /* set tx address for pipe 0 */
-		}
-		else if(sendpipe == 1)
-		{
-			nrf24l01_settxaddr(addrtx1);             /* set tx address for pipe 1 */
-		}
-		else if(sendpipe == 2)
-		{
-			nrf24l01_settxaddr(addrtx2);   		     /* set tx address for pipe 2 */
-		}
-		else if(sendpipe == 3)
-		{
-			nrf24l01_settxaddr(addrtx3);             /* set tx address for pipe 3 */
-		}
-		else if(sendpipe == 4)
-		{
-			nrf24l01_settxaddr(addrtx4);    		/* set tx address for pipe 4 */
-		}
-		else if(sendpipe == 5)
-		{
-			nrf24l01_settxaddr(addrtx5);            /* set tx address for pipe 5 */
-		}
+
+	while(1)
+	{
 
 
+		 /* set tx address for pipe 2 */
+		nrf24l01_settxaddr(addrtx2);
 
-		/* programin the first time   */
+		/* Programming the first time   */
 		nrf_txData_status = Send_StartPrograming();
-
 		if(nrf_txData_status == nrf_transmit_success)
 		{
-			for(U8_t i = 0; i < 12; i++)
+//			for(U8_t index = 0; index < blocks_error_number; index++)
+			for(U8_t index = 0; index < 12; index++)
 			{
-				Send_ProgramingBlock(month_index);
-				month_index++;
+//				Send_ProgramingBlock(blocks_error[index]);
+				Send_ProgramingBlock(index+1);
 			}
-
-			month_index = 1;
-			/* TODO check this later*/
 			nrf_txData_status = Send_EndPrograming();
-
 		}
-
 
 		/* Check the block fault in programming  */
 		if(nrf_txData_status == nrf_transmit_success)
@@ -157,37 +120,25 @@ int main(void)
 			data_recvd_pipe = 0;
 		}
 
-		nrf24l01_setTXMode();
-		nrf24l01_settxaddr(addrtx2);
-		/* Reprogramming the fault blocks */
-		EF_void_UART_SendString(" fualt number ");
-		EF_void_UART_Send_Integer(blocks_error_number);
-		EF_void_UART_SendString("\n");
-		if(!(blocks_error_number == 0))
+		_delay_ms(5000);
+
+		/* change the channel   */
+		if(g_rfChanl == RF_CHANL_1)
 		{
-			EF_void_UART_SendString(" Reprogramming the fault blocks  ");
-
-			nrf_txData_status = Send_StartPrograming();
-			if(nrf_txData_status == nrf_transmit_success)
-			{
-
-				for(U8_t i = 0; i < blocks_error_number; i++)
-				{
-					Send_ProgramingBlock(blocks_error[i]);
-					//				month_index++;
-				}
-
-				month_index = 1;
-				/* TODO check this later*/
-				nrf_txData_status = Send_EndPrograming();
-
-			}
-
+			g_rfChanl = RF_CHANL_2;
 		}
+		else if(g_rfChanl == RF_CHANL_2)
+		{
+			g_rfChanl = RF_CHANL_1;
+		}
+		/*reinit channel */
+		EF_nrf24l01_init(g_rfChanl);
+		nrf24l01_setTXMode();
 
 
 
-		_delay_ms(10000);
+
+
 
 	}/* superloop */
 

@@ -139,8 +139,14 @@ Discarded input sections
  .bss           0x00000000        0x0 ./ServiceLayer/Program_Handl.o
  .text.Send_ErrorFrame
                 0x00000000       0x66 ./ServiceLayer/Program_Handl.o
+ .text.Receive_Programing_Mode
+                0x00000000      0x14a ./ServiceLayer/Program_Handl.o
  .text.get_DaysPerMonth
                 0x00000000       0x14 ./ServiceLayer/Program_Handl.o
+ .bss.DayPrMonth.2041
+                0x00000000        0x1 ./ServiceLayer/Program_Handl.o
+ .bss.months_error_index.2042
+                0x00000000        0x1 ./ServiceLayer/Program_Handl.o
  .text          0x00000000        0x0 ./ServiceLayer/cwpack.o
  .bss           0x00000000        0x0 ./ServiceLayer/cwpack.o
  .rodata.str1.1
@@ -213,12 +219,16 @@ Discarded input sections
                 0x00000000      0x24c ./ServiceLayer/umqtt.o
  .text          0x00000000        0x0 ./MCAL/EF_ADC.o
  .bss           0x00000000        0x0 ./MCAL/EF_ADC.o
+ .text.EF_void_ADC_init
+                0x00000000       0x12 ./MCAL/EF_ADC.o
  .text.EF_void_ADC_Disable
                 0x00000000        0xa ./MCAL/EF_ADC.o
  .text.EF_u16_ADC_read
                 0x00000000       0x14 ./MCAL/EF_ADC.o
  .text          0x00000000        0x0 ./MCAL/EF_DIO.o
  .bss           0x00000000        0x0 ./MCAL/EF_DIO.o
+ .text.EF_S8_DIO_InitPort
+                0x00000000       0x2e ./MCAL/EF_DIO.o
  .text.EF_S8_DIO_WritePort
                 0x00000000       0x2e ./MCAL/EF_DIO.o
  .text.EF_S16_DIO_ReadPort
@@ -274,10 +284,14 @@ Discarded input sections
                 0x00000000        0xc ./MCAL/EF_UART.o
  .text          0x00000000        0x0 ./HAL/EF_Anemometer.o
  .bss           0x00000000        0x0 ./HAL/EF_Anemometer.o
+ .text.EF_Anemometer_init
+                0x00000000        0x4 ./HAL/EF_Anemometer.o
  .text.EF_U8_Anemometer_GetWindSpeed
                 0x00000000       0x3c ./HAL/EF_Anemometer.o
  .text          0x00000000        0x0 ./HAL/EF_GPS.o
  .bss           0x00000000        0x0 ./HAL/EF_GPS.o
+ .text.EF_Gps_init
+                0x00000000        0xe ./HAL/EF_GPS.o
  .text.char2int
                 0x00000000       0x78 ./HAL/EF_GPS.o
  .rodata.str1.1
@@ -294,12 +308,6 @@ Discarded input sections
                 0x00000000       0x48 ./HAL/nrf24l01.o
  .text          0x00000000        0x0 ./main.o
  .bss           0x00000000        0x0 ./main.o
- .bss.ACK_read  0x00000000       0x20 ./main.o
- .bss.sensors_read
-                0x00000000       0x15 ./main.o
- .bss.position  0x00000000       0xd2 ./main.o
- .bss.one_time_flag
-                0x00000000        0x1 ./main.o
  .text          0x00000000        0x0 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_divmodhi4.o)
  .bss           0x00000000        0x0 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_divmodhi4.o)
  .text.libgcc.mul
@@ -692,7 +700,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x1b86
+.text           0x00000000     0x1b44
  *(.vectors)
  .vectors       0x00000000       0x54 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -836,158 +844,146 @@ END GROUP
  .text.Receive_ErrorFrame
                 0x00000842       0xbe ./ServiceLayer/Program_Handl.o
                 0x00000842                Receive_ErrorFrame
- .text.EF_void_ADC_init
-                0x00000900       0x12 ./MCAL/EF_ADC.o
-                0x00000900                EF_void_ADC_init
- .text.EF_S8_DIO_InitPort
-                0x00000912       0x2e ./MCAL/EF_DIO.o
-                0x00000912                EF_S8_DIO_InitPort
  .text.EF_SpiInit
-                0x00000940       0x20 ./MCAL/EF_SPI.o
-                0x00000940                EF_SpiInit
+                0x00000900       0x20 ./MCAL/EF_SPI.o
+                0x00000900                EF_SpiInit
  .text.EF_SpiTransfer
-                0x00000960       0x4c ./MCAL/EF_SPI.o
-                0x00000960                EF_SpiTransfer
+                0x00000920       0x4c ./MCAL/EF_SPI.o
+                0x00000920                EF_SpiTransfer
  .text.EF_void_Timer_PORTinit
-                0x000009ac       0x1a ./MCAL/EF_Timer.o
-                0x000009ac                EF_void_Timer_PORTinit
+                0x0000096c       0x1a ./MCAL/EF_Timer.o
+                0x0000096c                EF_void_Timer_PORTinit
  .text.EF_void_Timer_SetISRCallBack
-                0x000009c6        0xa ./MCAL/EF_Timer.o
-                0x000009c6                EF_void_Timer_SetISRCallBack
+                0x00000986        0xa ./MCAL/EF_Timer.o
+                0x00000986                EF_void_Timer_SetISRCallBack
  .text.__vector_5
-                0x000009d0       0x5c ./MCAL/EF_Timer.o
-                0x000009d0                __vector_5
+                0x00000990       0x5c ./MCAL/EF_Timer.o
+                0x00000990                __vector_5
  .text.EF_void_UART_Init
-                0x00000a2c       0xda ./MCAL/EF_UART.o
-                0x00000a2c                EF_void_UART_Init
+                0x000009ec       0xda ./MCAL/EF_UART.o
+                0x000009ec                EF_void_UART_Init
  .text.EF_BOOLEAN_UART_PutChar
-                0x00000b06       0x36 ./MCAL/EF_UART.o
-                0x00000b06                EF_BOOLEAN_UART_PutChar
+                0x00000ac6       0x36 ./MCAL/EF_UART.o
+                0x00000ac6                EF_BOOLEAN_UART_PutChar
  .text.EF_void_UART_PutChar
-                0x00000b3c        0x8 ./MCAL/EF_UART.o
-                0x00000b3c                EF_void_UART_PutChar
+                0x00000afc        0x8 ./MCAL/EF_UART.o
+                0x00000afc                EF_void_UART_PutChar
  .text.EF_void_UART_Send_Integer
-                0x00000b44       0x5c ./MCAL/EF_UART.o
-                0x00000b44                EF_void_UART_Send_Integer
+                0x00000b04       0x5c ./MCAL/EF_UART.o
+                0x00000b04                EF_void_UART_Send_Integer
  .text.EF_void_UART_SendString
-                0x00000ba0       0x26 ./MCAL/EF_UART.o
-                0x00000ba0                EF_void_UART_SendString
+                0x00000b60       0x26 ./MCAL/EF_UART.o
+                0x00000b60                EF_void_UART_SendString
  .text.__vector_13
-                0x00000bc6       0x94 ./MCAL/EF_UART.o
-                0x00000bc6                __vector_13
- .text.EF_Anemometer_init
-                0x00000c5a        0x4 ./HAL/EF_Anemometer.o
-                0x00000c5a                EF_Anemometer_init
- .text.EF_Gps_init
-                0x00000c5e        0xe ./HAL/EF_GPS.o
-                0x00000c5e                EF_Gps_init
+                0x00000b86       0x94 ./MCAL/EF_UART.o
+                0x00000b86                __vector_13
  .text.EF_nrf24l01_readregister
-                0x00000c6c       0x30 ./HAL/nrf24l01.o
-                0x00000c6c                EF_nrf24l01_readregister
+                0x00000c1a       0x30 ./HAL/nrf24l01.o
+                0x00000c1a                EF_nrf24l01_readregister
  .text.EF_nrf24l01_writeregister
-                0x00000c9c       0x22 ./HAL/nrf24l01.o
-                0x00000c9c                EF_nrf24l01_writeregister
+                0x00000c4a       0x22 ./HAL/nrf24l01.o
+                0x00000c4a                EF_nrf24l01_writeregister
  .text.EF_nrf24l01_writeregisters
-                0x00000cbe       0x4a ./HAL/nrf24l01.o
-                0x00000cbe                EF_nrf24l01_writeregisters
+                0x00000c6c       0x4a ./HAL/nrf24l01.o
+                0x00000c6c                EF_nrf24l01_writeregisters
  .text.nrf24l01_revaddress
-                0x00000d08       0x22 ./HAL/nrf24l01.o
-                0x00000d08                nrf24l01_revaddress
+                0x00000cb6       0x22 ./HAL/nrf24l01.o
+                0x00000cb6                nrf24l01_revaddress
  .text.nrf24l01_setrxaddr
-                0x00000d2a       0xea ./HAL/nrf24l01.o
-                0x00000d2a                nrf24l01_setrxaddr
+                0x00000cd8       0xea ./HAL/nrf24l01.o
+                0x00000cd8                nrf24l01_setrxaddr
  .text.nrf24l01_settxaddr
-                0x00000e14       0x54 ./HAL/nrf24l01.o
-                0x00000e14                nrf24l01_settxaddr
+                0x00000dc2       0x54 ./HAL/nrf24l01.o
+                0x00000dc2                nrf24l01_settxaddr
  .text.nrf24l01_flushRXfifo
-                0x00000e68       0x10 ./HAL/nrf24l01.o
-                0x00000e68                nrf24l01_flushRXfifo
+                0x00000e16       0x10 ./HAL/nrf24l01.o
+                0x00000e16                nrf24l01_flushRXfifo
  .text.nrf24l01_flushTXfifo
-                0x00000e78       0x10 ./HAL/nrf24l01.o
-                0x00000e78                nrf24l01_flushTXfifo
+                0x00000e26       0x10 ./HAL/nrf24l01.o
+                0x00000e26                nrf24l01_flushTXfifo
  .text.nrf24l01_setRXMode
-                0x00000e88       0x4a ./HAL/nrf24l01.o
-                0x00000e88                nrf24l01_setRXMode
+                0x00000e36       0x4a ./HAL/nrf24l01.o
+                0x00000e36                nrf24l01_setRXMode
  .text.nrf24l01_setTXMode
-                0x00000ed2       0x3c ./HAL/nrf24l01.o
-                0x00000ed2                nrf24l01_setTXMode
+                0x00000e80       0x3c ./HAL/nrf24l01.o
+                0x00000e80                nrf24l01_setTXMode
  .text.EF_nrf24l01_getstatus
-                0x00000f0e       0x26 ./HAL/nrf24l01.o
-                0x00000f0e                EF_nrf24l01_getstatus
+                0x00000ebc       0x26 ./HAL/nrf24l01.o
+                0x00000ebc                EF_nrf24l01_getstatus
  .text.nrf24l01_printinfo
-                0x00000f34      0x11a ./HAL/nrf24l01.o
-                0x00000f34                nrf24l01_printinfo
+                0x00000ee2      0x11a ./HAL/nrf24l01.o
+                0x00000ee2                nrf24l01_printinfo
  .text.EF_nrf24l01_readready
-                0x0000104e       0x22 ./HAL/nrf24l01.o
-                0x0000104e                EF_nrf24l01_readready
+                0x00000ffc       0x22 ./HAL/nrf24l01.o
+                0x00000ffc                EF_nrf24l01_readready
  .text.EF_nrf24l01_readData
-                0x00001070       0x7c ./HAL/nrf24l01.o
-                0x00001070                EF_nrf24l01_readData
+                0x0000101e       0x7c ./HAL/nrf24l01.o
+                0x0000101e                EF_nrf24l01_readData
  .text.EF_nrf24l01_writeData
-                0x000010ec       0xfc ./HAL/nrf24l01.o
-                0x000010ec                EF_nrf24l01_writeData
+                0x0000109a       0xfc ./HAL/nrf24l01.o
+                0x0000109a                EF_nrf24l01_writeData
  .text.nrf24l01_setPwrlevel
-                0x000011e8       0x1a ./HAL/nrf24l01.o
-                0x000011e8                nrf24l01_setPwrlevel
+                0x00001196       0x1a ./HAL/nrf24l01.o
+                0x00001196                nrf24l01_setPwrlevel
  .text.nrf24l01_setDataRate
-                0x00001202       0x1a ./HAL/nrf24l01.o
-                0x00001202                nrf24l01_setDataRate
+                0x000011b0       0x1a ./HAL/nrf24l01.o
+                0x000011b0                nrf24l01_setDataRate
  .text.nrf24l01_setcrcLength
-                0x0000121c       0x1a ./HAL/nrf24l01.o
-                0x0000121c                nrf24l01_setcrcLength
+                0x000011ca       0x1a ./HAL/nrf24l01.o
+                0x000011ca                nrf24l01_setcrcLength
  .text.EF_nrf24l01_init
-                0x00001236      0x184 ./HAL/nrf24l01.o
-                0x00001236                EF_nrf24l01_init
+                0x000011e4      0x178 ./HAL/nrf24l01.o
+                0x000011e4                EF_nrf24l01_init
  .text.startup.main
-                0x000013ba      0x130 ./main.o
-                0x000013ba                main
+                0x0000135c      0x14c ./main.o
+                0x0000135c                main
  .text.libgcc.div
-                0x000014ea       0x44 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_udivmodsi4.o)
-                0x000014ea                __udivmodsi4
+                0x000014a8       0x44 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_udivmodsi4.o)
+                0x000014a8                __udivmodsi4
  .text.libgcc.div
-                0x0000152e       0x28 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_udivmodhi4.o)
-                0x0000152e                __udivmodhi4
+                0x000014ec       0x28 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_udivmodhi4.o)
+                0x000014ec                __udivmodhi4
  .text.avr-libc
-                0x00001556       0x1a /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(memcmp.o)
-                0x00001556                memcmp
+                0x00001514       0x1a /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(memcmp.o)
+                0x00001514                memcmp
  .text.avr-libc
-                0x00001570        0xe /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(memset.o)
-                0x00001570                memset
+                0x0000152e        0xe /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(memset.o)
+                0x0000152e                memset
  .text.avr-libc
-                0x0000157e       0x42 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(itoa.o)
-                0x0000157e                itoa
+                0x0000153c       0x42 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(itoa.o)
+                0x0000153c                itoa
  .text.avr-libc
-                0x000015c0       0x44 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(sprintf.o)
-                0x000015c0                sprintf
+                0x0000157e       0x44 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(sprintf.o)
+                0x0000157e                sprintf
  .text.avr-libc
-                0x00001604      0x3a4 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(vfprintf_std.o)
-                0x00001604                vfprintf
+                0x000015c2      0x3a4 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(vfprintf_std.o)
+                0x000015c2                vfprintf
  .text.avr-libc
-                0x000019a8       0x16 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strnlen_P.o)
-                0x000019a8                strnlen_P
+                0x00001966       0x16 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strnlen_P.o)
+                0x00001966                strnlen_P
  .text.avr-libc
-                0x000019be       0x16 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strnlen.o)
-                0x000019be                strnlen
+                0x0000197c       0x16 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strnlen.o)
+                0x0000197c                strnlen
  .text.avr-libc
-                0x000019d4       0x20 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strrev.o)
-                0x000019d4                strrev
+                0x00001992       0x20 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(strrev.o)
+                0x00001992                strrev
  .text.avr-libc
-                0x000019f4       0x64 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(fputc.o)
-                0x000019f4                fputc
+                0x000019b2       0x64 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(fputc.o)
+                0x000019b2                fputc
  .text.avr-libc
-                0x00001a58       0xbc /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(ultoa_invert.o)
-                0x00001a58                __ultoa_invert
+                0x00001a16       0xbc /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/libc.a(ultoa_invert.o)
+                0x00001a16                __ultoa_invert
  .text.libgcc.prologue
-                0x00001b14       0x38 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_prologue.o)
-                0x00001b14                __prologue_saves__
+                0x00001ad2       0x38 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_prologue.o)
+                0x00001ad2                __prologue_saves__
  .text.libgcc.prologue
-                0x00001b4c       0x36 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_epilogue.o)
-                0x00001b4c                __epilogue_restores__
-                0x00001b82                . = ALIGN (0x2)
+                0x00001b0a       0x36 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_epilogue.o)
+                0x00001b0a                __epilogue_restores__
+                0x00001b40                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00001b82        0x0 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_exit.o)
-                0x00001b82                exit
-                0x00001b82                _exit
+ .fini9         0x00001b40        0x0 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_exit.o)
+                0x00001b40                exit
+                0x00001b40                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1006,11 +1002,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00001b82        0x4 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_exit.o)
+ .fini0         0x00001b40        0x4 /usr/lib/gcc/avr/4.8.2/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x00001b86                _etext = .
+                0x00001b44                _etext = .
 
-.data           0x00800060      0x1e0 load address 0x00001b86
+.data           0x00800060      0x2bc load address 0x00001b44
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 /usr/lib/gcc/avr/4.8.2/../../../avr/lib/avr5/crtm32.o
@@ -1086,71 +1082,68 @@ END GROUP
  .data.g_rfChanl
                 0x00800083        0x1 ./HAL/nrf24l01.o
                 0x00800083                g_rfChanl
- .data.month_index.2161
-                0x00800084        0x1 ./main.o
  .data.uart_cfg1
-                0x00800085        0xb ./main.o
+                0x00800084        0xb ./main.o
  *(.rodata)
- .rodata        0x00800090        0x5 ./main.o
+ .rodata        0x0080008f        0x5 ./main.o
  *(.rodata*)
  .rodata.str1.1
-                0x00800095       0x12 ./ServiceLayer/EF_Frame.o
+                0x00800094       0x12 ./ServiceLayer/EF_Frame.o
  .rodata.CSWTCH.12
-                0x008000a7        0x5 ./ServiceLayer/EF_Frame.o
+                0x008000a6        0x5 ./ServiceLayer/EF_Frame.o
  .rodata.CSWTCH.8
-                0x008000ac        0x5 ./ServiceLayer/EF_Frame.o
+                0x008000ab        0x5 ./ServiceLayer/EF_Frame.o
  .rodata.str1.1
-                0x008000b1       0x5b ./ServiceLayer/Program_Handl.o
-                                 0x5d (size before relaxing)
+                0x008000b0      0x139 ./ServiceLayer/Program_Handl.o
+                                0x13e (size before relaxing)
  .rodata.u8MonthDays
-                0x0080010c        0xd ./ServiceLayer/Program_Handl.o
+                0x008001e9        0xd ./ServiceLayer/Program_Handl.o
  .rodata.str1.1
-                0x00800119       0xeb ./HAL/nrf24l01.o
+                0x008001f6       0xeb ./HAL/nrf24l01.o
                                  0xee (size before relaxing)
  .rodata.str1.1
-                0x00800204       0x3b ./main.o
+                0x008002e1       0x3b ./main.o
                                  0x3d (size before relaxing)
  *(.gnu.linkonce.d*)
-                0x00800240                . = ALIGN (0x2)
- *fill*         0x0080023f        0x1 
-                0x00800240                _edata = .
-                0x00800240                PROVIDE (__data_end, .)
+                0x0080031c                . = ALIGN (0x2)
+                0x0080031c                _edata = .
+                0x0080031c                PROVIDE (__data_end, .)
 
-.bss            0x00800240      0x1bc
-                0x00800240                PROVIDE (__bss_start, .)
+.bss            0x0080031c      0x1bc
+                0x0080031c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.timers_list
-                0x00800240       0x64 ./Utilities/EF_SpechialTIMER.o
+                0x0080031c       0x64 ./Utilities/EF_SpechialTIMER.o
  .bss.voidFuncPtr
-                0x008002a4        0x2 ./MCAL/EF_Timer.o
+                0x00800380        0x2 ./MCAL/EF_Timer.o
  .bss.UART_RxTail
-                0x008002a6        0x2 ./MCAL/EF_UART.o
+                0x00800382        0x2 ./MCAL/EF_UART.o
  .bss.UART_RxHead
-                0x008002a8        0x2 ./MCAL/EF_UART.o
+                0x00800384        0x2 ./MCAL/EF_UART.o
  .bss.UART_LastRxError
-                0x008002aa        0x1 ./MCAL/EF_UART.o
+                0x00800386        0x1 ./MCAL/EF_UART.o
  .bss.UART_RxBuf
-                0x008002ab      0x100 ./MCAL/EF_UART.o
+                0x00800387      0x100 ./MCAL/EF_UART.o
  *(COMMON)
- COMMON         0x008003ab        0xe ./ServiceLayer/Buffer.o
-                0x008003ab                isArduinoRXBufferEmpty
-                0x008003ac                isArduinoRXBufferOverFlowed
-                0x008003ad                CircularBuffer
- COMMON         0x008003b9       0x43 ./ServiceLayer/EF_Frame.o
-                0x008003b9                g_Packet_ID
-                0x008003bb                gstr_received_data
-                0x008003dc                g_FramBuild
-                0x008003fc                PROVIDE (__bss_end, .)
-                0x00001b86                __data_load_start = LOADADDR (.data)
-                0x00001d66                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800487        0xe ./ServiceLayer/Buffer.o
+                0x00800487                isArduinoRXBufferEmpty
+                0x00800488                isArduinoRXBufferOverFlowed
+                0x00800489                CircularBuffer
+ COMMON         0x00800495       0x43 ./ServiceLayer/EF_Frame.o
+                0x00800495                g_Packet_ID
+                0x00800497                gstr_received_data
+                0x008004b8                g_FramBuild
+                0x008004d8                PROVIDE (__bss_end, .)
+                0x00001b44                __data_load_start = LOADADDR (.data)
+                0x00001e00                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008003fc        0x0
-                0x008003fc                PROVIDE (__noinit_start, .)
+.noinit         0x008004d8        0x0
+                0x008004d8                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x008003fc                PROVIDE (__noinit_end, .)
-                0x008003fc                _end = .
-                0x008003fc                PROVIDE (__heap_start, .)
+                0x008004d8                PROVIDE (__noinit_end, .)
+                0x008004d8                _end = .
+                0x008004d8                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)

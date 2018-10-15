@@ -16,9 +16,8 @@
 
 enum
 {
-	programinmg_correct,
+	programing_correct,
 	programing_fault,
-
 };
 
 
@@ -33,6 +32,7 @@ U8_t Send_ErrorFrame(U8_t *month_error );
 U8_t get_DaysPerMonth(U8_t month_index);
 
 U8_t Receive_ErrorFrame(U8_t *bufferin, U8_t *blocks_error, U8_t *blocks_error_number);
+U8_t Receive_Programing_Mode(U8_t *bufferin, U8_t *months_error);
 
 
 

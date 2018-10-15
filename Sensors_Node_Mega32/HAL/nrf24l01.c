@@ -643,9 +643,9 @@ uint8_t EF_nrf24l01_init(uint8_t rf_channel)
 	nrf24l01_setrxaddr(5, nrf24l01_addr5);
 
 	/* tx address */
-	nrf24l01_settxaddr(nrf24l01_addrtx);
+//	nrf24l01_settxaddr(nrf24l01_addrtx);
 	/* set rx mode */
-	nrf24l01_setRXMode();
+//	nrf24l01_setRXMode();
 
 
 return ret_init_status;
