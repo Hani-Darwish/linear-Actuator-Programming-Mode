@@ -5,7 +5,7 @@
 
 str_received_data gstr_received_data;
 /* global frame buffer */
-volatile  U8_t g_FramBuild[MAX_FRAM_SIZE];
+U8_t g_FramBuild[MAX_FRAM_SIZE];
 /* counter for build frame occurrence */
 U16_t g_Packet_ID;
 

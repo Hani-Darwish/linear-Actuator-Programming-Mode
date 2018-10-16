@@ -140,7 +140,7 @@ Discarded input sections
  .text.Send_ErrorFrame
                 0x00000000       0x66 ./ServiceLayer/Program_Handl.o
  .text.Receive_Programing_Mode
-                0x00000000      0x14a ./ServiceLayer/Program_Handl.o
+                0x00000000      0x148 ./ServiceLayer/Program_Handl.o
  .text.get_DaysPerMonth
                 0x00000000       0x14 ./ServiceLayer/Program_Handl.o
  .bss.DayPrMonth.2041
@@ -1079,11 +1079,11 @@ END GROUP
                 0x00800079        0x5 ./HAL/nrf24l01.o
  .data.nrf24l01_addr0
                 0x0080007e        0x5 ./HAL/nrf24l01.o
- .data.g_rfChanl
-                0x00800083        0x1 ./HAL/nrf24l01.o
-                0x00800083                g_rfChanl
  .data.uart_cfg1
-                0x00800084        0xb ./main.o
+                0x00800083        0xb ./main.o
+ .data.g_rfChanl
+                0x0080008e        0x1 ./main.o
+                0x0080008e                g_rfChanl
  *(.rodata)
  .rodata        0x0080008f        0x5 ./main.o
  *(.rodata*)

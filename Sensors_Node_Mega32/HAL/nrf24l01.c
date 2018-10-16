@@ -23,7 +23,8 @@ Please refer to LICENSE file for licensing information.
 
 
 /* rf chanel */
-U8_t g_rfChanl = 92;
+extern U8_t g_rfChanl;
+
 
 /* address variables */
 static uint8_t nrf24l01_addr0[NRF24L01_ADDRSIZE]  = NRF24L01_ADDRP0;

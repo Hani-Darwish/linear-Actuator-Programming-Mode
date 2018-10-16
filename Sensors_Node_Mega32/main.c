@@ -13,25 +13,16 @@
 #define RF_CHANL_2		   57
 
 
+//
+//extern U8_t g_FramBuild[MAX_FRAM_SIZE];
+//extern U16_t g_Packet_ID;
 
-extern U8_t g_FramBuild[MAX_FRAM_SIZE];
-extern U8_t g_rfChanl;
-extern U16_t g_Packet_ID;
-
-
-
-
-
-
-
+U8_t g_rfChanl = RF_CHANL_1;
 static UART_cfg_str uart_cfg1 = {9600, 8, ONE_STOP_BIT, NO_PARITY, FALSE, FALSE, TRUE, TRUE};
-
-
 
 
 int main(void)
 {
-
 
 	U8_t data_recvd_pipe = 0;
 	U8_t blocks_error[12] = {0};
@@ -48,12 +39,12 @@ int main(void)
 	EF_nrf24l01_init(g_rfChanl);
 
 	/* set addresses */
-	uint8_t addrtx0[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP0;
-	uint8_t addrtx1[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP1;
+//	uint8_t addrtx0[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP0;
+//	uint8_t addrtx1[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP1;
 	uint8_t addrtx2[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP2;
-	uint8_t addrtx3[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP3;
-	uint8_t addrtx4[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP4;
-	uint8_t addrtx5[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP5;
+//	uint8_t addrtx3[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP3;
+//	uint8_t addrtx4[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP4;
+//	uint8_t addrtx5[NRF24L01_ADDRSIZE] = NRF24L01_ADDRP5;
 
 
 #if DEBUGENABLED == 1
@@ -120,7 +111,7 @@ int main(void)
 			data_recvd_pipe = 0;
 		}
 
-		_delay_ms(5000);
+		_delay_ms(4000);
 
 		/* change the channel   */
 		if(g_rfChanl == RF_CHANL_1)

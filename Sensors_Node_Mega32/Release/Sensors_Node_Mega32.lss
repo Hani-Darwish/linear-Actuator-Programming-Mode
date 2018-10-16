@@ -474,9 +474,9 @@ Disassembly of section .text:
      3b2:	f9 1f       	adc	r31, r25
      3b4:	36 81       	ldd	r19, Z+6	; 0x06
      3b6:	fc 01       	movw	r30, r24
-     3b8:	ef 53       	subi	r30, 0x3F	; 63
+     3b8:	e8 54       	subi	r30, 0x48	; 72
      3ba:	fb 4f       	sbci	r31, 0xFB	; 251
-     3bc:	30 83       	st	Z, r19
+     3bc:	31 87       	std	Z+9, r19	; 0x09
      3be:	2f 5f       	subi	r18, 0xFF	; 255
      3c0:	ef cf       	rjmp	.-34     	; 0x3a0 <EF_nrf_Build_Fram+0x86>
      3c2:	ae 01       	movw	r20, r28
@@ -940,9 +940,9 @@ Disassembly of section .text:
      762:	ce 01       	movw	r24, r28
      764:	01 96       	adiw	r24, 0x01	; 1
      766:	0e 94 97 0a 	call	0x152e	; 0x152e <memset>
-     76a:	2f ef       	ldi	r18, 0xFF	; 255
-     76c:	80 e7       	ldi	r24, 0x70	; 112
-     76e:	92 e0       	ldi	r25, 0x02	; 2
+     76a:	2f e7       	ldi	r18, 0x7F	; 127
+     76c:	88 e3       	ldi	r24, 0x38	; 56
+     76e:	91 e0       	ldi	r25, 0x01	; 1
      770:	21 50       	subi	r18, 0x01	; 1
      772:	80 40       	sbci	r24, 0x00	; 0
      774:	90 40       	sbci	r25, 0x00	; 0
@@ -952,9 +952,9 @@ Disassembly of section .text:
      77c:	80 2f       	mov	r24, r16
      77e:	0e 94 0e 03 	call	0x61c	; 0x61c <Send_StartBlock>
      782:	18 2f       	mov	r17, r24
-     784:	2f ef       	ldi	r18, 0xFF	; 255
-     786:	80 e7       	ldi	r24, 0x70	; 112
-     788:	92 e0       	ldi	r25, 0x02	; 2
+     784:	2f e7       	ldi	r18, 0x7F	; 127
+     786:	88 e3       	ldi	r24, 0x38	; 56
+     788:	91 e0       	ldi	r25, 0x01	; 1
      78a:	21 50       	subi	r18, 0x01	; 1
      78c:	80 40       	sbci	r24, 0x00	; 0
      78e:	90 40       	sbci	r25, 0x00	; 0
@@ -978,9 +978,9 @@ Disassembly of section .text:
      7b2:	01 96       	adiw	r24, 0x01	; 1
      7b4:	0e 94 6a 03 	call	0x6d4	; 0x6d4 <Send_DayPosition>
      7b8:	18 2f       	mov	r17, r24
-     7ba:	2f ef       	ldi	r18, 0xFF	; 255
-     7bc:	80 e7       	ldi	r24, 0x70	; 112
-     7be:	92 e0       	ldi	r25, 0x02	; 2
+     7ba:	2f e7       	ldi	r18, 0x7F	; 127
+     7bc:	88 e3       	ldi	r24, 0x38	; 56
+     7be:	91 e0       	ldi	r25, 0x01	; 1
      7c0:	21 50       	subi	r18, 0x01	; 1
      7c2:	80 40       	sbci	r24, 0x00	; 0
      7c4:	90 40       	sbci	r25, 0x00	; 0
@@ -996,9 +996,9 @@ Disassembly of section .text:
      7d8:	e9 cf       	rjmp	.-46     	; 0x7ac <Send_ProgramingBlock+0x74>
      7da:	80 2f       	mov	r24, r16
      7dc:	0e 94 3c 03 	call	0x678	; 0x678 <Send_EndBlock>
-     7e0:	2f ef       	ldi	r18, 0xFF	; 255
-     7e2:	80 e7       	ldi	r24, 0x70	; 112
-     7e4:	92 e0       	ldi	r25, 0x02	; 2
+     7e0:	2f e7       	ldi	r18, 0x7F	; 127
+     7e2:	88 e3       	ldi	r24, 0x38	; 56
+     7e4:	91 e0       	ldi	r25, 0x01	; 1
      7e6:	21 50       	subi	r18, 0x01	; 1
      7e8:	80 40       	sbci	r24, 0x00	; 0
      7ea:	90 40       	sbci	r25, 0x00	; 0
@@ -2165,7 +2165,7 @@ Disassembly of section .text:
     116e:	0e 94 e4 00 	call	0x1c8	; 0x1c8 <EF_void_TimerStop>
     1172:	87 e0       	ldi	r24, 0x07	; 7
     1174:	0e 94 ec 00 	call	0x1d8	; 0x1d8 <EF_void_TimerReset>
-    1178:	60 91 83 00 	lds	r22, 0x0083
+    1178:	60 91 8e 00 	lds	r22, 0x008E
     117c:	85 e0       	ldi	r24, 0x05	; 5
     117e:	0e 94 25 06 	call	0xc4a	; 0xc4a <EF_nrf24l01_writeregister>
     1182:	81 2f       	mov	r24, r17
@@ -2396,10 +2396,10 @@ Disassembly of section .text:
     1392:	8a 95       	dec	r24
     1394:	e9 f7       	brne	.-6      	; 0x1390 <main+0x34>
     1396:	0e 94 5a 00 	call	0xb4	; 0xb4 <EF_void_TimerInit>
-    139a:	84 e8       	ldi	r24, 0x84	; 132
+    139a:	83 e8       	ldi	r24, 0x83	; 131
     139c:	90 e0       	ldi	r25, 0x00	; 0
     139e:	0e 94 f6 04 	call	0x9ec	; 0x9ec <EF_void_UART_Init>
-    13a2:	80 91 83 00 	lds	r24, 0x0083
+    13a2:	80 91 8e 00 	lds	r24, 0x008E
     13a6:	0e 94 f2 08 	call	0x11e4	; 0x11e4 <EF_nrf24l01_init>
     13aa:	85 e0       	ldi	r24, 0x05	; 5
     13ac:	ef e8       	ldi	r30, 0x8F	; 143
@@ -2487,23 +2487,23 @@ Disassembly of section .text:
     146e:	41 f3       	breq	.-48     	; 0x1440 <main+0xe4>
     1470:	18 ae       	std	Y+56, r1	; 0x38
     1472:	2f ef       	ldi	r18, 0xFF	; 255
-    1474:	81 e1       	ldi	r24, 0x11	; 17
-    1476:	9a e7       	ldi	r25, 0x7A	; 122
+    1474:	87 ea       	ldi	r24, 0xA7	; 167
+    1476:	91 e6       	ldi	r25, 0x61	; 97
     1478:	21 50       	subi	r18, 0x01	; 1
     147a:	80 40       	sbci	r24, 0x00	; 0
     147c:	90 40       	sbci	r25, 0x00	; 0
     147e:	e1 f7       	brne	.-8      	; 0x1478 <main+0x11c>
     1480:	00 c0       	rjmp	.+0      	; 0x1482 <main+0x126>
     1482:	00 00       	nop
-    1484:	80 91 83 00 	lds	r24, 0x0083
+    1484:	80 91 8e 00 	lds	r24, 0x008E
     1488:	8c 35       	cpi	r24, 0x5C	; 92
     148a:	19 f4       	brne	.+6      	; 0x1492 <main+0x136>
-    148c:	b0 92 83 00 	sts	0x0083, r11
+    148c:	b0 92 8e 00 	sts	0x008E, r11
     1490:	04 c0       	rjmp	.+8      	; 0x149a <main+0x13e>
     1492:	89 33       	cpi	r24, 0x39	; 57
     1494:	11 f4       	brne	.+4      	; 0x149a <main+0x13e>
-    1496:	c0 92 83 00 	sts	0x0083, r12
-    149a:	80 91 83 00 	lds	r24, 0x0083
+    1496:	c0 92 8e 00 	sts	0x008E, r12
+    149a:	80 91 8e 00 	lds	r24, 0x008E
     149e:	0e 94 f2 08 	call	0x11e4	; 0x11e4 <EF_nrf24l01_init>
     14a2:	0e 94 40 07 	call	0xe80	; 0xe80 <nrf24l01_setTXMode>
     14a6:	b6 cf       	rjmp	.-148    	; 0x1414 <main+0xb8>
